@@ -105,7 +105,7 @@ Ejercicios
   continuación, una captura de `wavesurfer` en la que se vea con claridad la señal temporal, el contorno de
   potencia y la tasa de cruces por cero, junto con el etiquetado manual de los segmentos.
 
-![captura_ej1.png](https://github.com/zzuljs/CppLearning/blob/master/CppLearning/raw/master/captura_ej1.png)
+![captura_ej1.jpg](https://github.com/zzuljs/CppLearning/blob/master/CppLearning/raw/master/captura_ej1.jpg)
 
 - A la vista de la gráfica, indique qué valores considera adecuados para las magnitudes siguientes:
 
