@@ -1,4 +1,4 @@
-#ifdef __cplusplus
+#ifndef __cplusplus
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
