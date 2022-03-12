@@ -105,7 +105,7 @@ Ejercicios
   continuación, una captura de `wavesurfer` en la que se vea con claridad la señal temporal, el contorno de
   potencia y la tasa de cruces por cero, junto con el etiquetado manual de los segmentos.
 
-![Image Text](/eliaCandela/P2/Campos-Candela/P2/captura_ej1.jpg)
+![Image Text](https://github.com/eliaCandela/P2/edit/Campos-Candela/captura_ej1.jpg)
 
 - A la vista de la gráfica, indique qué valores considera adecuados para las magnitudes siguientes:
 
