@@ -105,8 +105,11 @@ Ejercicios
   continuación, una captura de `wavesurfer` en la que se vea con claridad la señal temporal, el contorno de
   potencia y la tasa de cruces por cero, junto con el etiquetado manual de los segmentos.
 
+  Etiquetamos manualmente los segmentos de voz y audio con el fichero LAB.P1.1.lab. Acontinuación, comparamos 
+  las transacciones con el `wavesurfer`. Seguido se puede observar la captura obenida. 
+  
 <p align="center">
-  <img src="captura_ej1.jpg" width="600" title="Captura de señal">
+  <img src="captura_ej1.jpg" width="650" title="Captura de la señal">
 </p>
 
 - A la vista de la gráfica, indique qué valores considera adecuados para las magnitudes siguientes:
