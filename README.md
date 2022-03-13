@@ -116,6 +116,9 @@ Ejercicios
 
 	* Incremento del nivel potencia en dB, respecto al nivel correspondiente al silencio inicial, para
 	  estar seguros de que un segmento de señal se corresponde con voz.
+	  
+	  Viendo la señal obtenida y su potencia, el valor depende de la amplitud del ruido en dB. 
+	  Con esto, en nuestra señal consideramos un margen de 12 dB (offset) aproximadamente para poder asegurar que se trata de silencio.
 
 	* Duración mínima razonable de los segmentos de voz y silencio.
 
