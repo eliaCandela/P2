@@ -126,6 +126,11 @@ Ejercicios
 
 	* ¿Es capaz de sacar alguna conclusión a partir de la evolución de la tasa de cruces por cero?
 
+	Es la envolvente. Foto.
+	
+	![image](https://user-images.githubusercontent.com/69263837/158132033-236c86bc-c0d3-41e6-825e-ae66fa25489e.png)
+
+
 
 ### Desarrollo del detector de actividad vocal
 
