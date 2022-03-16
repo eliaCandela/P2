@@ -109,7 +109,7 @@ Ejercicios
   las transacciones con el `wavesurfer`. Seguido se puede observar la captura obenida. 
   
 <p align="center">
-  <img src="captura_ej1.jpg" width="650" title="Captura de la señal">
+  <img src="capturaWS_ej1.jpg" width="1000" title="Captura de la señal">
 </p>
 
 - A la vista de la gráfica, indique qué valores considera adecuados para las magnitudes siguientes:
