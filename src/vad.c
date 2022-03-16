@@ -6,6 +6,10 @@
 #include "vad.h"
 
 const float FRAME_TIME = 10.0F; /* in ms. */
+unsigned int cnt_mb_voice; /*contador tramas en mb_voice*/
+unsigned int cnt_mb_silence;  /*contador tramas en mb_silence*/
+unsigned int cnt_th_init; /*contador tramas para threshold en init*/
+float accum_power = 0; /*variable que acumula potencia del inicio*/
 
 /* 
  * As the output state is only ST_VOICE, ST_SILENCE, or ST_UNDEF,
@@ -94,27 +98,57 @@ VAD_STATE vad(VAD_DATA *vad_data, float *x) {
 
   switch (vad_data->state) {
   case ST_INIT:
-    vad_data-> p1=f.p + vad_data->alpha1;
-    vad_data->state = ST_SILENCE;
+    accum_power = f.p + accum_power;
+    cnt_th_init++;
+    //if(cnt_th_init > vad_data->alpha1){
+    if(f.p > 1.5*(accum_power/cnt_th_init)){
+      vad_data-> p1 = (accum_power/cnt_th_init);   // f.p + 1 ; decidir umbral - vad_data->alpha1
+      vad_data->state = ST_SILENCE;
+      cnt_th_init = 0;
+    }else{
+    //accum_power = f.p + accum_power;
+    }
+    break;
+
+  case ST_MB_VOICE:
+    if (f.p > vad_data->p1&&cnt_mb_voice > 100){ //probar parametros
+      vad_data->state = ST_VOICE;
+      cnt_mb_voice = 0;
+    }else if (f.p < vad_data->p1)
+      vad_data->state = ST_SILENCE;
+
+    cnt_mb_voice++;
+    break;
+
+  case ST_MB_SILENCE:
+    if (f.p < vad_data->p1&&cnt_mb_silence > 100){
+      vad_data->state = ST_SILENCE;
+      cnt_mb_silence = 0;
+    }else if(f.p > vad_data->p1)
+      vad_data->state = ST_MB_VOICE;
+    cnt_mb_silence++;
     break;
 
   case ST_SILENCE:
     if (f.p > vad_data->p1)
-      vad_data->state = ST_VOICE;
+      vad_data->state = ST_MB_VOICE;
     break;
 
   case ST_VOICE:
     if (f.p < vad_data->p1)
-      vad_data->state = ST_SILENCE;
+      vad_data->state = ST_MB_SILENCE;
     break;
 
   case ST_UNDEF:
     break;
+
   }
 
   if (vad_data->state == ST_SILENCE ||
-      vad_data->state == ST_VOICE)
+    vad_data->state == ST_VOICE)
     return vad_data->state;
+  else if (vad_data->state == ST_INIT)
+    return ST_SILENCE; /* forzamos estado silence en inicio*/
   else
     return ST_UNDEF;
 }
