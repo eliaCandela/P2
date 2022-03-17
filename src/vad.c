@@ -6,9 +6,9 @@
 #include "vad.h"
 
 const float FRAME_TIME = 10.0F; /* in ms. */
-unsigned int cnt_mb_voice; /*contador tramas en mb_voice*/
-unsigned int cnt_mb_silence;  /*contador tramas en mb_silence*/
-unsigned int cnt_th_init; /*contador tramas para threshold en init*/
+unsigned int cnt_mb_voice = 0; /*contador tramas en mb_voice*/
+unsigned int cnt_mb_silence = 0;  /*contador tramas en mb_silence*/
+unsigned int cnt_th_init = 0; /*contador tramas para threshold en init*/
 float accum_power = 0; /*variable que acumula potencia del inicio*/
 
 /* 
@@ -71,8 +71,8 @@ VAD_STATE vad_close(VAD_DATA *vad_data) {
   /* 
    * TODO: decide what to do with the last undecided frames
    */
-  VAD_STATE state = vad_data->state;
-
+  //VAD_STATE state = vad_data->state;
+  VAD_STATE state = ST_SILENCE; //OJO! TEMPORAL - lo ideal seria mirar en que estado ha estado
   free(vad_data);
   return state;
 }
@@ -101,9 +101,9 @@ VAD_STATE vad(VAD_DATA *vad_data, float *x) {
     accum_power = f.p + accum_power;
     cnt_th_init++;
     //if(cnt_th_init > vad_data->alpha1){
-    if(f.p > 1.5*(accum_power/cnt_th_init)){
+    if(f.p >= (1.2)*(accum_power/cnt_th_init)){
       vad_data-> p1 = (accum_power/cnt_th_init);   // f.p + 1 ; decidir umbral - vad_data->alpha1
-      vad_data->state = ST_SILENCE;
+      vad_data->state = ST_SILENCE; //OJO PODEMOS PERDER HABLA CORTA
       cnt_th_init = 0;
     }else{
     //accum_power = f.p + accum_power;
@@ -111,7 +111,7 @@ VAD_STATE vad(VAD_DATA *vad_data, float *x) {
     break;
 
   case ST_MB_VOICE:
-    if (f.p > vad_data->p1&&cnt_mb_voice > 100){ //probar parametros
+    if (f.p >= vad_data->p1 && cnt_mb_voice >= vad_data->alpha1){ //probar parametros - 5 : 92.2
       vad_data->state = ST_VOICE;
       cnt_mb_voice = 0;
     }else if (f.p < vad_data->p1)
@@ -121,7 +121,7 @@ VAD_STATE vad(VAD_DATA *vad_data, float *x) {
     break;
 
   case ST_MB_SILENCE:
-    if (f.p < vad_data->p1&&cnt_mb_silence > 100){
+    if (f.p <= vad_data->p1 && cnt_mb_silence >= 4){
       vad_data->state = ST_SILENCE;
       cnt_mb_silence = 0;
     }else if(f.p > vad_data->p1)
@@ -144,8 +144,7 @@ VAD_STATE vad(VAD_DATA *vad_data, float *x) {
 
   }
 
-  if (vad_data->state == ST_SILENCE ||
-    vad_data->state == ST_VOICE)
+  if (vad_data->state == ST_SILENCE ||vad_data->state == ST_VOICE)
     return vad_data->state;
   else if (vad_data->state == ST_INIT)
     return ST_SILENCE; /* forzamos estado silence en inicio*/
