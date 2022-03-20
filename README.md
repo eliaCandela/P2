@@ -120,11 +120,11 @@ Ejercicios
 	* Incremento del nivel potencia en dB, respecto al nivel correspondiente al silencio inicial, para
 	  estar seguros de que un segmento de señal se corresponde con voz.
 	 
-	-> Tenemos que tener en cuenta que nuestro audio no es de muy buena calidad, es decir, La potencia del ruido es muy grande comparada
-	con la potencia del volumen. Por ello, el threshold escogido es bastante bajo y asi podemos detectar mejor la Voz. 
+	-> Tenemos que tener en cuenta que nuestro audio no es de muy buena calidad, es decir, la potencia del ruido es muy grande comparada
+	con la potencia del volumen. Por ello, el threshold escogido es bastante bajo y asi podemos detectar mejor la voz. 
 	-> Viendo la señal obtenida y su potencia, el valor depende de la amplitud del ruido en dB. 
 	Con esto, en nuestra señal consideramos un margen de k0= 4dB y k1 = 1dB, siendo k0 el primer umbral que decide voz y silencio, 
-	y k1 el segundo umbral que asegura el estado de Voz.
+	y k1 el segundo umbral que asegura el estado de voz.
 	
 	* Duración mínima razonable de los segmentos de voz y silencio.
 
@@ -135,10 +135,10 @@ Ejercicios
 	* ¿Es capaz de sacar alguna conclusión a partir de la evolución de la tasa de cruces por cero?
 
 	->Podemos observar que en las consonantes sordas fricativas de resonancias altas como la /s/ y el fonema /ch/ 
-	dan picos en la gráfica de cruces por zero.En cambio, en los silencios, dado que se encuentran con mucho 
+	dan picos en la gráfica de cruces por zero. En cambio, en los silencios, dado que tienen mucho 
 	ruido, se representan con una gran cantidad de picos.
-	Esto lo podemos observar en la imagen adjunta con mayor claridad:
 
+	
 
 ### Desarrollo del detector de actividad vocal
 
@@ -172,7 +172,7 @@ en las que cuesta detectar el silencio o incluso lo detecta tarde.
 -> Respecto el resultado de nuestra señal, obtenemos un total de 92,852%. En cambio, en el general un 86,504%. 
 Eso es así, ya que nuestra señal es de una calidad muy baja. Para conseguir unos buenos resultados en nuestra señal hemos tenido 
 que ajustar mucho los umbrales, de forma conservadora, sin embargo este ajuste no ha beneficiado tanto en el analisis de las bases de datos.
-Respecto al general, vemos que la mayoria de los ficheros obtienen porcentages de entre 80% y 90%, no obstante podemos encontrar algunas señales que
+Respecto al general, vemos que la mayoria de los ficheros obtienen porcentajes de entre 80% y 90%, no obstante podemos encontrar algunas señales que
 obtienen un 70%. Esto hace que la media obtenida sea un poco baja. 
 
 
@@ -214,7 +214,7 @@ añadiendo la variable 'alpha1'.
   considere de interés de cara a su evaluación.
   
   -> Contribuciones adicionales: 
-  1. Hemos añadido un algoritmo que al inicio de la señal coje X tramas (que se asumen como silencio) y calcula su potencia aritmética. 
+  1. Hemos añadido un algoritmo que al inicio de la señal coge X tramas (que se asumen como silencio) y calcula su potencia aritmética. 
   Después, utiliza una variable que marca el porcentaje de potencia que debe superar la señal al inicio antes de considerarse voz (vad_data->pPot). 
   De esta manera, podemos calcular de forma adaptativa el umbral k0 teniendo en cuenta las máximas muestras posibles de silencio. 
   2. También, hemos añadido un número de muestras estables que deben superarse antes de cambiar de estado, tanto en el inicio de la señal como 
