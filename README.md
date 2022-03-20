@@ -188,7 +188,7 @@ obtienen un 70%. Esto hace que la media obtenida sea un poco baja.
 <img src="captura_ampliclear.jpg" width="1000" title="Captura de la señal">
 </p>
 
--> Tal y como podemos ver en la gráfica adjunta (la gráfica superior es nuestra señal y la inferior la resultante), 
+-> Tal y como podemos ver en la gráfica adjunta (la gráfica inferior es nuestra señal y la superior la resultante), 
 las tramas de silencio detectadas se han puesto a zero. 
 
 
