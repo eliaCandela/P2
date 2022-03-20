@@ -14,10 +14,12 @@ const char *state2str(VAD_STATE st);
 typedef struct {
   VAD_STATE state;
   float sampling_rate;
-  unsigned int frame_length;
+  unsigned int frame_length, k0, k1, nStableInit, nStableVoice, nStableSilence;
   float last_feature; /* for debuggin purposes */
   float p1;
   float alpha1;
+  float pPot;
+
 } VAD_DATA;
 
 /* Call this function before using VAD: 
