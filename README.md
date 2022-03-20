@@ -189,9 +189,11 @@ Ejercicios
   considere de interés de cara a su evaluación.
   
   -> Conclusión final de nuestro proyecto: 
-  1. Hemos decidido solo representar los estamos Voz y Silencio en la función vad, ya que sino en algunas tramas se encontraria
+  1. Tenemos que tener en cuenta que nuestro audio no es de muy buena calidad, es decir, tiene tramas con mucho ruido y su volumen es muy bajo, 
+  cosa que nos ha dificultado en ciertos momentos. Aun así, el resultado final es bueno y hemos obtenido una buena detección de voz y silencio. 
+  2. Hemos decidido solo representar los estamos Voz y Silencio en la función vad, ya que sino en algunas tramas se encontraria
   con un ST_UNDEF. Esto nos facilita la precisión de la señal y nos permite detectar mucho mejor el estado concrteo con unos umbrales especificos.
-  2. Nos hemos centrado en el número de tramas de la señal, en vez de su tiempo, para poder especificar 
+  3. Nos hemos centrado en el número de tramas de la señal, en vez de su tiempo, para poder especificar 
 
 
 ### Antes de entregar la práctica
