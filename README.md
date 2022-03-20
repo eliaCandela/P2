@@ -105,28 +105,38 @@ Ejercicios
   continuación, una captura de `wavesurfer` en la que se vea con claridad la señal temporal, el contorno de
   potencia y la tasa de cruces por cero, junto con el etiquetado manual de los segmentos.
 
-  Etiquetamos manualmente los segmentos de voz y audio con el fichero LAB.P1.1.lab. Acontinuación, comparamos 
-  las transacciones con el `wavesurfer`. Seguido se puede observar la captura obenida. 
+  -> Etiquetamos manualmente los segmentos de voz y audio con el fichero LAB.P1.1.lab. A continuación, comparamos 
+  las transacciones con el `wavesurfer`. Seguido se puede observar la captura obenida. Además, adjuntamos las gráficas 
+  de 'crucesporzero.txt' (Panel superior) y de 'recullDadesPot.txt' (que tiene los datos de la potencia de la señal - Panel 
+  intermedio de la señal y el ZCR). 
+  Representamos a la parte superior de la captura las transcripciones .lab (teorica nuestra) y la .vad (propia de la señal) para ver los 
+  ajustes de clasificación de voz (V) y silencio (S). 
   
 <p align="center">
-  <img src="capturaWS_ej1.jpg" width="1000" title="Captura de la señal">
+  <img src="captura_ej1_WS.jpg" width="1000" title="Captura de la señal">
 </p>
 
 - A la vista de la gráfica, indique qué valores considera adecuados para las magnitudes siguientes:
 
 	* Incremento del nivel potencia en dB, respecto al nivel correspondiente al silencio inicial, para
 	  estar seguros de que un segmento de señal se corresponde con voz.
-	  
-	  Viendo la señal obtenida y su potencia, el valor depende de la amplitud del ruido en dB. 
-	  Con esto, en nuestra señal consideramos un margen de 12 dB (offset) aproximadamente para poder asegurar que se trata de silencio.
-
+	
+	->Viendo la señal obtenida y su potencia, el valor depende de la amplitud del ruido en dB. 
+	Con esto, en nuestra señal consideramos un margen de 12 dB (offset) aproximadamente para poder asegurar 
+	que se trata de silencio.
+	
 	* Duración mínima razonable de los segmentos de voz y silencio.
 
-	Tal vez usando la frecuencia?
+	 ->En nuestra gráfica hemos podido observar que el tiempo mínimo para detectar un silencio es de 81 ms y el 
+	 de la voz es de 190 ms. Estos tiempos son los más pequeños que encontramos en nuestra señal y usamos 
+	 como referéncia. 
 
 	* ¿Es capaz de sacar alguna conclusión a partir de la evolución de la tasa de cruces por cero?
 
-	Es la envolvente. Foto.
+	->Podemos observar que en las consonantes sordas fricativas de resonancias altas como la /s/ y el fonema /ch/ 
+	dan picos en la gráfica de cruces por zero.En cambio, en los silencios, dado que se encuentran con mucho 
+	ruido, se representan con una gran cantidad de picos.
+	Esto lo podemos observar en la imagen adjunta con mayor claridad:
 	
 	![image](https://user-images.githubusercontent.com/69263837/158132033-236c86bc-c0d3-41e6-825e-ae66fa25489e.png)
 
@@ -140,8 +150,14 @@ Ejercicios
 - Inserte una gráfica en la que se vea con claridad la señal temporal, el etiquetado manual y la detección
   automática conseguida para el fichero grabado al efecto. 
 
+<p align="center">
+  <img src="captura_ej1_WS.jpg" width="1000" title="Captura de la señal">
+</p>
 
 - Explique, si existen. las discrepancias entre el etiquetado manual y la detección automática.
+
+-> Podemos ver algunas pequeñas discrepancias en tramas donde se encuentra un sonido más sordo o con un poco más de ruido, 
+   ya que son más dificiles de detectar.
 
 - Evalúe los resultados sobre la base de datos `db.v4` con el script `vad_evaluation.pl` e inserte a 
   continuación las tasas de sensibilidad (*recall*) y precisión para el conjunto de la base de datos (sólo
@@ -155,6 +171,8 @@ Ejercicios
 - Si ha desarrollado el algoritmo para la cancelación de los segmentos de silencio, inserte una gráfica en
   la que se vea con claridad la señal antes y después de la cancelación (puede que `wavesurfer` no sea la
   mejor opción para esto, ya que no es capaz de visualizar varias señales al mismo tiempo).
+  
+  -> 
 
 #### Gestión de las opciones del programa usando `docopt_c`
 
@@ -169,6 +187,13 @@ Ejercicios
 
 - Si lo desea, puede realizar también algún comentario acerca de la realización de la práctica que
   considere de interés de cara a su evaluación.
+  
+  -> Conclusión final de nuestro proyecto: 
+  1. Tenemos que tener en cuenta que nuestro audio no es de muy buena calidad, es decir, tiene tramas con mucho ruido y su volumen es muy bajo, 
+  cosa que nos ha dificultado en ciertos momentos. Aun así, el resultado final es bueno y hemos obtenido una buena detección de voz y silencio. 
+  2. Hemos decidido solo representar los estamos Voz y Silencio en la función vad, ya que sino en algunas tramas se encontraria
+  con un ST_UNDEF. Esto nos facilita la precisión de la señal y nos permite detectar mucho mejor el estado concrteo con unos umbrales especificos.
+  3. Nos hemos centrado en el número de tramas de la señal, en vez de su tiempo, para poder especificar 
 
 
 ### Antes de entregar la práctica

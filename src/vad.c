@@ -55,7 +55,7 @@ Features compute_features(const float *x, int N) {
 }
 
 /* 
- * TODO: Init the values of vad_data
+ * DONE: Init the values of vad_data
  */
 
 VAD_DATA * vad_open(float rate, float alpha1) {
@@ -63,7 +63,15 @@ VAD_DATA * vad_open(float rate, float alpha1) {
   vad_data->state = ST_INIT;
   vad_data->sampling_rate = rate;
   vad_data->frame_length = rate * FRAME_TIME * 1e-3;
-  vad_data->alpha1 = alpha1;
+  vad_data->alpha1=alpha1;
+  vad_data->k0 = 4; 
+  vad_data->k1 = 1;
+  vad_data->pPot = 0.96; /*trigger in percent in INIT state to detect voice*/
+  /*minimum number of stable frames*/
+  vad_data->nStableInit = 10;
+  vad_data->nStableVoice = 7;
+  vad_data->nStableSilence = 3;
+
   return vad_data;
 }
 
@@ -71,8 +79,7 @@ VAD_STATE vad_close(VAD_DATA *vad_data) {
   /* 
    * TODO: decide what to do with the last undecided frames
    */
-  //VAD_STATE state = vad_data->state;
-  VAD_STATE state = ST_SILENCE; //OJO! TEMPORAL - lo ideal seria mirar en que estado ha estado
+  VAD_STATE state = ST_SILENCE; 
   free(vad_data);
   return state;
 }
@@ -82,14 +89,14 @@ unsigned int vad_frame_size(VAD_DATA *vad_data) {
 }
 
 /* 
- * TODO: Implement the Voice Activity Detection 
+ * DONE: Implement the Voice Activity Detection 
  * using a Finite State Automata
  */
 
 VAD_STATE vad(VAD_DATA *vad_data, float *x) {
 
   /* 
-   * TODO: You can change this, using your own features,
+   * DONE: You can change this, using your own features,
    * program finite state automaton, define conditions, etc.
    */
 
@@ -100,36 +107,36 @@ VAD_STATE vad(VAD_DATA *vad_data, float *x) {
   case ST_INIT:
     accum_power = f.p + accum_power;
     cnt_th_init++;
-
-    //if(cnt_th_init > vad_data->alpha1){
-    if(f.p > (1.3) * (accum_power/cnt_th_init)){
-      vad_data-> p1 = (accum_power/cnt_th_init);   // f.p + 1 ; decidir umbral - vad_data->alpha1
-      vad_data->state = ST_SILENCE; //OJO PODEMOS PERDER HABLA CORTA
+    if(f.p >= (vad_data->pPot)*(accum_power/cnt_th_init)&&vad_data->nStableInit){ //pPot - nStableInit
+      vad_data-> p1 = (accum_power/cnt_th_init) + vad_data->k0;   //k0
+      vad_data->state = ST_SILENCE; 
       cnt_th_init = 0;
-    }else{
-    //accum_power = f.p + accum_power;
     }
     break;
 
   case ST_MB_VOICE:
-    if (f.p >= vad_data->p1 && cnt_mb_voice >= 5){ //probar parametros - 5 : 92.2
-      vad_data->state = ST_VOICE;
-      cnt_mb_voice = 0;
-    }else if (f.p > vad_data->p1){
-      vad_data->state = ST_SILENCE;
-    }
-    cnt_mb_voice++;
+    if (f.p >= vad_data->p1 + vad_data->k1){ //k1 - nStableVoice
+      if(cnt_mb_voice >= vad_data->nStableVoice){
+        vad_data->state = ST_VOICE;
+        cnt_mb_voice = 0;
+      }else{
+        cnt_mb_voice++;
+      }
+    }else
+     vad_data->state = ST_SILENCE;
+
     break;
 
   case ST_MB_SILENCE:
-    if (f.p <= vad_data->p1 && cnt_mb_silence >= 2 ){
+    if (f.p <= vad_data->p1){ //nStableSilence
+      if(cnt_mb_silence >= vad_data->nStableSilence){
       vad_data->state = ST_SILENCE;
       cnt_mb_silence = 0;
-
-    }else if(f.p > vad_data->p1){
-      vad_data->state = ST_MB_VOICE;
-    }
-    cnt_mb_silence++;
+      }else{
+        cnt_mb_silence++;
+      }
+    }else if(f.p > vad_data->p1)
+      vad_data->state = ST_VOICE;
     break;
 
   case ST_SILENCE:
@@ -150,8 +157,6 @@ VAD_STATE vad(VAD_DATA *vad_data, float *x) {
 
   if (vad_data->state == ST_SILENCE ||vad_data->state == ST_VOICE)
     return vad_data->state;
-  else if (vad_data->state == ST_INIT)
-    return ST_SILENCE; /* forzamos estado silence en inicio*/
   else
     return ST_UNDEF;
 }
