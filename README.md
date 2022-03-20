@@ -105,11 +105,14 @@ Ejercicios
   continuación, una captura de `wavesurfer` en la que se vea con claridad la señal temporal, el contorno de
   potencia y la tasa de cruces por cero, junto con el etiquetado manual de los segmentos.
 
-  Etiquetamos manualmente los segmentos de voz y audio con el fichero LAB.P1.1.lab. Acontinuación, comparamos 
-  las transacciones con el `wavesurfer`. Seguido se puede observar la captura obenida. 
+  - Etiquetamos manualmente los segmentos de voz y audio con el fichero LAB.P1.1.lab. A continuación, comparamos 
+  las transacciones con el `wavesurfer`. Seguido se puede observar la captura obenida. Además, adjuntamos las gráficas de 'crucesporzero.txt' 
+  (que obtinene los datos de los ZCR) y de 'recullDadesPot.txt' (que tiene los datos de la potencia de la señal). 
+  Representamos a la parte superior de la captura las transcripciones .lab (teorica nuestra) y la .vad (propia de la señal) para ver los 
+  ajustes de clasificación de voz (V) y silencio (S). 
   
 <p align="center">
-  <img src="capturaWS_ej1.jpg" width="1000" title="Captura de la señal">
+  <img src="captura_ej1_WS.jpg" width="1000" title="Captura de la señal">
 </p>
 
 - A la vista de la gráfica, indique qué valores considera adecuados para las magnitudes siguientes:
@@ -117,12 +120,15 @@ Ejercicios
 	* Incremento del nivel potencia en dB, respecto al nivel correspondiente al silencio inicial, para
 	  estar seguros de que un segmento de señal se corresponde con voz.
 	  
-	  Viendo la señal obtenida y su potencia, el valor depende de la amplitud del ruido en dB. 
-	  Con esto, en nuestra señal consideramos un margen de 12 dB (offset) aproximadamente para poder asegurar que se trata de silencio.
+	- Viendo la señal obtenida y su potencia, el valor depende de la amplitud del ruido en dB. 
+	Con esto, en nuestra señal consideramos un margen de 12 dB (offset) aproximadamente para poder asegurar que se trata de silencio.
 
 	* Duración mínima razonable de los segmentos de voz y silencio.
 
-	Tal vez usando la frecuencia?
+	- Tal y como se puede escuchar en un audio WAV, hay tonos y sonidos que pueden llegar a confundirse a causa de su tono sordo.
+	Por ese motivo hemos generado dos estamos más: ST_MB_VOICE (estado maybe_voice) y ST_MB_SILENCE (estado maybe_silence). 
+	Al estar en una zona de silencio y detectarse una voz pero que no supera el umbral esperado, se entra en el estado ST_MB_VOICE.
+	En él se estima que si no passa un X tiempo, no se considera una voz. 
 
 	* ¿Es capaz de sacar alguna conclusión a partir de la evolución de la tasa de cruces por cero?
 
