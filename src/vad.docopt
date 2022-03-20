@@ -10,6 +10,7 @@ Options:
    -o FILE, --output-vad=FILE  Label file with the result of VAD
    -w FILE, --output-wav=FILE  WAVE file with silences cleared
    -1 FLOAT, --alpha1=FLOAT    Umbral voz silencio [default: 10]
+   -2 FLOAT, --time=FLOAT      Tiempo minimo para detectar voz o silencio [default: 50]
    -v, --verbose  Show debug information
    -h, --help     Show this screen
    --version      Show the version of the project

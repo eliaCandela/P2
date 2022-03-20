@@ -10,7 +10,7 @@ unsigned int cnt_mb_voice = 0; /*contador tramas en mb_voice*/
 unsigned int cnt_mb_silence = 0;  /*contador tramas en mb_silence*/
 unsigned int cnt_th_init = 0; /*contador tramas para threshold en init*/
 float accum_power = 0; /*variable que acumula potencia del inicio*/
-
+const float fm = 16000;
 /* 
  * As the output state is only ST_VOICE, ST_SILENCE, or ST_UNDEF,
  * only this labels are needed. You need to add all labels, in case
@@ -47,7 +47,7 @@ Features compute_features(const float *x, int N) {
    * For the moment, compute random value between 0 and 1 
    */
   Features feat;
-  feat.zcr = compute_zcr(x, N, 16000);
+  feat.zcr = compute_zcr(x, N, fm);
   feat.p=compute_power(x, N);
   feat.am=compute_am(x, N);
 
@@ -63,7 +63,7 @@ VAD_DATA * vad_open(float rate, float alpha1) {
   vad_data->state = ST_INIT;
   vad_data->sampling_rate = rate;
   vad_data->frame_length = rate * FRAME_TIME * 1e-3;
-  vad_data->alpha1=alpha1;
+  vad_data->alpha1 = alpha1;
   return vad_data;
 }
 
@@ -100,8 +100,9 @@ VAD_STATE vad(VAD_DATA *vad_data, float *x) {
   case ST_INIT:
     accum_power = f.p + accum_power;
     cnt_th_init++;
+
     //if(cnt_th_init > vad_data->alpha1){
-    if(f.p >= (1.2)*(accum_power/cnt_th_init)){
+    if(f.p > (1.3) * (accum_power/cnt_th_init)){
       vad_data-> p1 = (accum_power/cnt_th_init);   // f.p + 1 ; decidir umbral - vad_data->alpha1
       vad_data->state = ST_SILENCE; //OJO PODEMOS PERDER HABLA CORTA
       cnt_th_init = 0;
@@ -111,27 +112,30 @@ VAD_STATE vad(VAD_DATA *vad_data, float *x) {
     break;
 
   case ST_MB_VOICE:
-    if (f.p >= vad_data->p1 && cnt_mb_voice >= vad_data->alpha1){ //probar parametros - 5 : 92.2
+    if (f.p >= vad_data->p1 && cnt_mb_voice >= 5){ //probar parametros - 5 : 92.2
       vad_data->state = ST_VOICE;
       cnt_mb_voice = 0;
-    }else if (f.p < vad_data->p1)
+    }else if (f.p > vad_data->p1){
       vad_data->state = ST_SILENCE;
-
+    }
     cnt_mb_voice++;
     break;
 
   case ST_MB_SILENCE:
-    if (f.p <= vad_data->p1 && cnt_mb_silence >= 4){
+    if (f.p <= vad_data->p1 && cnt_mb_silence >= 2 ){
       vad_data->state = ST_SILENCE;
       cnt_mb_silence = 0;
-    }else if(f.p > vad_data->p1)
+
+    }else if(f.p > vad_data->p1){
       vad_data->state = ST_MB_VOICE;
+    }
     cnt_mb_silence++;
     break;
 
   case ST_SILENCE:
     if (f.p > vad_data->p1)
       vad_data->state = ST_MB_VOICE;
+
     break;
 
   case ST_VOICE:
