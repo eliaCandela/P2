@@ -107,23 +107,24 @@ Ejercicios
 
   -> Etiquetamos manualmente los segmentos de voz y audio con el fichero LAB.P1.1.lab. A continuación, comparamos 
   las transacciones con el `wavesurfer`. Seguido se puede observar la captura obenida. Además, adjuntamos las gráficas 
-  de 'crucesporzero.txt' (Panel superior) y de 'recullDadesPot.txt' (que tiene los datos de la potencia de la señal - Panel 
-  intermedio de la señal y el ZCR). 
+  de 'crucesporzero.txt' (Panel intermedio) y de 'potenciaREAL.pot' (Panel superior). 
   Representamos a la parte superior de la captura las transcripciones .lab (teorica nuestra) y la .vad (propia de la señal) para ver los 
   ajustes de clasificación de voz (V) y silencio (S). 
   
 <p align="center">
-  <img src="captura_ej1_WS.jpg" width="1000" title="Captura de la señal">
+  <img src="captura_ejercicio1.jpg" width="1000" title="Captura de la señal">
 </p>
 
 - A la vista de la gráfica, indique qué valores considera adecuados para las magnitudes siguientes:
 
 	* Incremento del nivel potencia en dB, respecto al nivel correspondiente al silencio inicial, para
 	  estar seguros de que un segmento de señal se corresponde con voz.
-	
-	->Viendo la señal obtenida y su potencia, el valor depende de la amplitud del ruido en dB. 
-	Con esto, en nuestra señal consideramos un margen de 12 dB (offset) aproximadamente para poder asegurar 
-	que se trata de silencio.
+	 
+	-> Tenemos que tener en cuenta que nuestro audio no es de muy buena calidad, es decir, La potencia del ruido es muy grande comparada
+	con la potencia del volumen. Por ello, el threshold escogido es bastante bajo y asi podemos detectar mejor la Voz. 
+	-> Viendo la señal obtenida y su potencia, el valor depende de la amplitud del ruido en dB. 
+	Con esto, en nuestra señal consideramos un margen de k0= 4dB y k1 = 1dB, siendo k0 el primer umbral que decide voz y silencio, 
+	y k1 el segundo umbral que asegura el estado de Voz.
 	
 	* Duración mínima razonable de los segmentos de voz y silencio.
 
@@ -137,9 +138,6 @@ Ejercicios
 	dan picos en la gráfica de cruces por zero.En cambio, en los silencios, dado que se encuentran con mucho 
 	ruido, se representan con una gran cantidad de picos.
 	Esto lo podemos observar en la imagen adjunta con mayor claridad:
-	
-	![image](https://user-images.githubusercontent.com/69263837/158132033-236c86bc-c0d3-41e6-825e-ae66fa25489e.png)
-
 
 
 ### Desarrollo del detector de actividad vocal
@@ -151,17 +149,31 @@ Ejercicios
   automática conseguida para el fichero grabado al efecto. 
 
 <p align="center">
-  <img src="captura_ej1_WS.jpg" width="1000" title="Captura de la señal">
+  <img src="CapturaSeñal_ej2.jpg" width="1000" title="Captura de la señal">
 </p>
 
-- Explique, si existen. las discrepancias entre el etiquetado manual y la detección automática.
+- Explique, si existen, las discrepancias entre el etiquetado manual y la detección automática.
 
--> Podemos ver algunas pequeñas discrepancias en tramas donde se encuentra un sonido más sordo o con un poco más de ruido, 
-   ya que son más dificiles de detectar.
+-> Podemos ver algunas pequeñas discrepancias debido a que tenemos una señal con mucho ruido y hay tramas
+en las que cuesta detectar el silencio o incluso lo detecta tarde. 
 
 - Evalúe los resultados sobre la base de datos `db.v4` con el script `vad_evaluation.pl` e inserte a 
   continuación las tasas de sensibilidad (*recall*) y precisión para el conjunto de la base de datos (sólo
   el resumen).
+
+<p align="center">
+  <img src="captura_nuestraSeñal.jpg" width="1000" title="Captura de la señal">
+</p>
+
+<p align="center">
+  <img src="captura_general.jpg" width="1000" title="Captura de la señal">
+</p>
+
+-> Respecto el resultado de nuestra señal, obtenemos un total de 92,852%. En cambio, en el general un 86,504%. 
+Eso es así, ya que nuestra señal es de una calidad muy baja. Para conseguir unos buenos resultados en nuestra señal hemos tenido 
+que ajustar mucho los umbrales, de forma conservadora, sin embargo este ajuste no ha beneficiado tanto en el analisis de las bases de datos.
+Respecto al general, vemos que la mayoria de los ficheros obtienen porcentages de entre 80% y 90%, no obstante podemos encontrar algunas señales que
+obtienen un 70%. Esto hace que la media obtenida sea un poco baja. 
 
 
 ### Trabajos de ampliación
@@ -172,12 +184,25 @@ Ejercicios
   la que se vea con claridad la señal antes y después de la cancelación (puede que `wavesurfer` no sea la
   mejor opción para esto, ya que no es capaz de visualizar varias señales al mismo tiempo).
   
-  -> 
+<p align="center">
+<img src="captura_ampliclear.jpg" width="1000" title="Captura de la señal">
+</p>
+
+-> Tal y como podemos ver en la gráfica adjunta (la gráfica superior es nuestra señal y la inferior la resultante), 
+las tramas de silencio detectadas se han puesto a zero. 
+
 
 #### Gestión de las opciones del programa usando `docopt_c`
 
 - Si ha usado `docopt_c` para realizar la gestión de las opciones y argumentos del programa `vad`, inserte
   una captura de pantalla en la que se vea el mensaje de ayuda del programa.
+  
+<p align="center">
+<img src="captura_ejDocopt.jpg" width="1000" title="Captura de la señal">
+</p>
+  
+-> Para poder añadir y facilitar, en ciertas variables, el uso y obtención de umbrales más precisos, hemos editado el fichero 'docopt_c'
+añadiendo la variable 'alpha1'. 
 
 
 ### Contribuciones adicionales y/o comentarios acerca de la práctica
@@ -188,12 +213,20 @@ Ejercicios
 - Si lo desea, puede realizar también algún comentario acerca de la realización de la práctica que
   considere de interés de cara a su evaluación.
   
+  -> Contribuciones adicionales: 
+  1. Hemos añadido un algoritmo que al inicio de la señal coje X tramas (que se asumen como silencio) y calcula su potencia aritmética. 
+  Después, utiliza una variable que marca el porcentaje de potencia que debe superar la señal al inicio antes de considerarse voz (vad_data->pPot). 
+  De esta manera, podemos calcular de forma adaptativa el umbral k0 teniendo en cuenta las máximas muestras posibles de silencio. 
+  2. También, hemos añadido un número de muestras estables que deben superarse antes de cambiar de estado, tanto en el inicio de la señal como 
+  en los estados de transición ST_MB_VOICE y ST_MB_SILENCE. Esto nos ayuda a evitar posibles cambios de estado por picos de 
+  potencia que no sean realistas, como silencios demasiado cortos o ruidos desfavorables. 
+  
   -> Conclusión final de nuestro proyecto: 
-  1. Tenemos que tener en cuenta que nuestro audio no es de muy buena calidad, es decir, tiene tramas con mucho ruido y su volumen es muy bajo, 
-  cosa que nos ha dificultado en ciertos momentos. Aun así, el resultado final es bueno y hemos obtenido una buena detección de voz y silencio. 
-  2. Hemos decidido solo representar los estamos Voz y Silencio en la función vad, ya que sino en algunas tramas se encontraria
-  con un ST_UNDEF. Esto nos facilita la precisión de la señal y nos permite detectar mucho mejor el estado concrteo con unos umbrales especificos.
-  3. Nos hemos centrado en el número de tramas de la señal, en vez de su tiempo, para poder especificar 
+  1. A pesar de tener una señal ruidosa y con problemas de volumen, hemos obtenido un buen resultado. Además, hemos añadido ciertas funcionalidades
+  que son interesantes y nos han permitido una mejor detección. 
+  2. Para futuros proyectos nos gustaria añadir un filtro de ruido pasa-banda centrado en 1kHz, que nos ayudaria a reducir los problemas de ruido
+  que hemos tenido en esta ocasión. También nos gustaria mejorar las transiciones entre estados para que el resultado sea más preciso.
+
 
 
 ### Antes de entregar la práctica
