@@ -64,13 +64,13 @@ VAD_DATA * vad_open(float rate, float alpha1) {
   vad_data->sampling_rate = rate;
   vad_data->frame_length = rate * FRAME_TIME * 1e-3;
   vad_data->alpha1=alpha1;
-  vad_data->k0 = 4; 
-  vad_data->k1 = 1;
-  vad_data->pPot = 0.96; /*trigger in percent in INIT state to detect voice*/
+  vad_data->k0 = 5; 
+  vad_data->k1 = 5;
+  vad_data->pPot = 0.989; /*trigger in percent in INIT state to detect voice*/ //0.989
   /*minimum number of stable frames*/
-  vad_data->nStableInit = 10;
-  vad_data->nStableVoice = 7;
-  vad_data->nStableSilence = 3;
+  vad_data->nStableInit = 7; //7
+  vad_data->nStableVoice = 0;
+  vad_data->nStableSilence = 9; //9
 
   return vad_data;
 }
@@ -107,7 +107,7 @@ VAD_STATE vad(VAD_DATA *vad_data, float *x) {
   case ST_INIT:
     accum_power = f.p + accum_power;
     cnt_th_init++;
-    if(f.p >= (vad_data->pPot)*(accum_power/cnt_th_init)&&vad_data->nStableInit){ //pPot - nStableInit
+    if(f.p >= (vad_data->pPot)*(accum_power/cnt_th_init) && (vad_data->nStableInit < cnt_th_init)){ //pPot - nStableInit
       vad_data-> p1 = (accum_power/cnt_th_init) + vad_data->k0;   //k0
       vad_data->state = ST_SILENCE; 
       cnt_th_init = 0;
