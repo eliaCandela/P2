@@ -162,18 +162,11 @@ en las que cuesta detectar el silencio o incluso lo detecta tarde.
   el resumen).
 
 <p align="center">
-  <img src="captura_nuestraSeñal.jpg" width="1000" title="Captura de la señal">
+  <img src="Captura_general_con_nuestraSeñal.jpg" width="1000" title="Captura de la señal">
 </p>
 
-<p align="center">
-  <img src="captura_general.jpg" width="1000" title="Captura de la señal">
-</p>
-
--> Respecto el resultado de nuestra señal, obtenemos un total de 92,852%. En cambio, en el general un 86,504%. 
-Eso es así, ya que nuestra señal es de una calidad muy baja. Para conseguir unos buenos resultados en nuestra señal hemos tenido 
-que ajustar mucho los umbrales, de forma conservadora, sin embargo este ajuste no ha beneficiado tanto en el analisis de las bases de datos.
-Respecto al general, vemos que la mayoria de los ficheros obtienen porcentajes de entre 80% y 90%, no obstante podemos encontrar algunas señales que
-obtienen un 70%. Esto hace que la media obtenida sea un poco baja. 
+-> Respecto al resultado de la base de datos, obtenemos un total de 93,419%. En cambio, en el propio un 88,666%. 
+Respecto al general, vemos que la mayoria de los ficheros obtienen porcentajes superiores al 90%, no obstante podemos encontrar unas pocas señales alrededor del 70%, que hacen que la media baje.
 
 
 ### Trabajos de ampliación
